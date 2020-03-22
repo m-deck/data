@@ -70,8 +70,10 @@ df = pd.DataFrame.from_records(records).merge(regions, on='_RegionLabel')
 df['Date'] = date
 
 # Merge the new data with the existing data
-prev_data = 'https://raw.githubusercontent.com/open-covid-19/data/master/output/es.csv'
+prev_data = 'https://open-covid-19.github.io/data/data.csv'
 df = pd.concat([pd.read_csv(prev_data, dtype=str), df], sort=False)
+df = df[df['CountryCode'] == 'ES']
+df = df[~df['RegionCode'].isna()]
 df = df.set_index(['Date', 'RegionCode']).query('~index.duplicated()').reset_index()
 
 # Output the results
